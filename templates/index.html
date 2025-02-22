@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="{{ lingua }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ trad.titulo }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>{{ trad.titulo }}</h1>
+    <form method="POST">
+        <label>{{ trad.nome_paciente }}:</label><br>
+        <input type="text" name="nome" value="{{ request.form.nome if request.method == 'POST' else '' }}"><br><br>
+        <label>{{ trad.registro }}:</label><br>
+        <input type="text" name="registro" value="{{ request.form.registro if request.method == 'POST' else '' }}"><br><br>
+        <label>{{ trad.pressao_braco }}:</label><br>
+        <input type="number" step="0.1" name="pressao_braco" value="{{ request.form.pressao_braco if request.method == 'POST' else '' }}"><br><br>
+        <label>{{ trad.pressao_tornozelo }}:</label><br>
+        <input type="number" step="0.1" name="pressao_tornozelo" value="{{ request.form.pressao_tornozelo if request.method == 'POST' else '' }}"><br><br>
+        <label>{{ trad.momento }}:</label><br>
+        <select name="momento">
+            <option value="{{ trad.antes }}">{{ trad.antes }}</option>
+            <option value="{{ trad.depois }}">{{ trad.depois }}</option>
+        </select><br><br>
+        <input type="submit" value="{{ trad.salvar_calcular }}">
+        <input type="button" value="{{ trad.limpar }}" onclick="window.location.href='/'">
+    </form>
+    <p><strong>{{ trad.resultado }}:</strong> {{ resultado }}</p>
+    <p>{{ trad.politica_texto }}</p>
+    <a href="/exportar_excel?lingua={{ lingua }}">{{ trad.exportar_excel }}</a> |
+    <a href="/exportar_pdf?lingua={{ lingua }}">{{ trad.exportar_pdf }}</a>
+    <h2>Histórico</h2>
+    <table>
+        <tr>
+            <th>{{ trad.tabela_nome }}</th>
+            <th>{{ trad.tabela_registro }}</th>
+            <th>{{ trad.tabela_data }}</th>
+            <th>{{ trad.tabela_itb }}</th>
+            <th>{{ trad.tabela_momento }}</th>
+        </tr>
+        {% for row in historico %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] or '' }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p><a href="?lingua=pt">Português</a> | <a href="?lingua=en">English</a></p>
+</body>
+</html>
